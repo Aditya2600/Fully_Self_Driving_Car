@@ -1,3 +1,4 @@
+```markdown
 # 🚗 Self-Driving Car Project
 
 This is an end-to-end self-driving car pipeline that combines:
@@ -8,20 +9,12 @@ This is an end-to-end self-driving car pipeline that combines:
 - 🔁 **Threaded Inference** for performance
 
 ---
-You should add your **Google Drive dataset link** in the `README.md` under a clearly labeled section like **📂 Dataset Setup**.
 
----
-
-## ✅ Recommended: Add to `README.md`
-
-Here’s a clean and professional example:
-
-```markdown
 ## 📂 Dataset Setup
 
 The dataset is not included in the repository due to size constraints.
 
-📥 [Download the dataset from Google Drive]([https://drive.google.com/your-dataset-link](https://drive.google.com/file/d/1PZWa6H0i1PCH9zuYcIh5Ouk_p-9Gh58B/view))
+📥 [Download the dataset from Google Drive](https://drive.google.com/file/d/1PZWa6H0i1PCH9zuYcIh5Ouk_p-9Gh58B/view?usp=sharing)
 
 After downloading, extract and place the contents like this:
 
@@ -35,8 +28,7 @@ Self\_Driving\_Car/
 │       ├── ...
 │       └── data.txt
 
-```
-```
+````
 
 ---
 
@@ -49,77 +41,86 @@ Self\_Driving\_Car/
 ## 🛠️ Installation
 
 ```bash
-git clone https://github.com/Aditya2600/Self_Driving_Car.git
-cd Self_Driving_Car
+git clone https://github.com/Aditya2600/Fully_Self_Driving_Car.git
+cd Fully_Self_Driving_Car
 pip install -r requirements.txt
+````
 
+---
 
-⸻
+## 🚀 Run Inference Simulation
 
-🚀 Run Inference Simulation
-
+```bash
 python src/inference/run_fsd_inference.py
+```
 
 Make sure the following models and files exist:
 
+```
 saved_models/
-├── regression_model/model.ckpt
-├── lane_segmentation_model/best.pt
-├── object_detection_model/best.pt
+├── regression_model/model.ckpt.*
+├── lane_segmentation_model/best_yolo11_lane_segmentation.pt
+├── object_detection_model/yolo11m-seg.pt
 
 data/
 ├── driving_dataset/0.jpg, 1.jpg, ...
 ├── steer-wheel.png
+```
 
+---
 
-⸻
+## 🧠 Training the Steering Angle Model
 
-🧠 Training the Steering Angle Model
+Training is based on NVIDIA’s self-driving car architecture.
 
-Training is based on NVIDIA’s self-driving architecture.
-
+```bash
 python model_training/train_steering_angle/train.py
+```
 
-Logs are saved for TensorBoard:
+You can visualize training logs using TensorBoard:
 
+```bash
 tensorboard --logdir=model_training/train_steering_angle/logs
+```
 
+---
 
-⸻
+## 🗂️ Project Structure
 
-🗂️ Project Structure
-
+```
 src/
 ├── inference/
 │   └── run_fsd_inference.py
 ├── models/
 │   └── model.py  # CNN architecture
+
 saved_models/
 data/
-
-
-⸻
-
-📦 Dependencies
-
-See requirements.txt, includes:
-	•	tensorflow==1.15
-	•	ultralytics
-	•	opencv-python
-	•	numpy
-
-⸻
-
-👤 Author
-
-Aditya Meshram
-
-⸻
-
-📄 License
-
-This project is licensed under the MIT License.
+```
 
 ---
 
+## 📦 Dependencies
 
+See `requirements.txt`. Key packages include:
+
+* `tensorflow==1.15`
+* `ultralytics`
+* `opencv-python`
+* `numpy`
+
+---
+
+## 👤 Author
+
+Aditya Meshram
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+```
+
+---
