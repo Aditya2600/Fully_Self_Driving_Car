@@ -8,6 +8,37 @@ This is an end-to-end self-driving car pipeline that combines:
 - 🔁 **Threaded Inference** for performance
 
 ---
+You should add your **Google Drive dataset link** in the `README.md` under a clearly labeled section like **📂 Dataset Setup**.
+
+---
+
+## ✅ Recommended: Add to `README.md`
+
+Here’s a clean and professional example:
+
+```markdown
+## 📂 Dataset Setup
+
+The dataset is not included in the repository due to size constraints.
+
+📥 [Download the dataset from Google Drive]([https://drive.google.com/your-dataset-link](https://drive.google.com/file/d/1PZWa6H0i1PCH9zuYcIh5Ouk_p-9Gh58B/view))
+
+After downloading, extract and place the contents like this:
+
+```
+
+Self\_Driving\_Car/
+├── data/
+│   └── driving\_dataset/
+│       ├── 0.jpg
+│       ├── 1.jpg
+│       ├── ...
+│       └── data.txt
+
+```
+```
+
+---
 
 ## 🎬 Demo
 
