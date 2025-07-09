@@ -29,4 +29,8 @@ checkpoint
 
 # ▶ Specific large files
 saved_models/lane_segmentation_model/best_yolo11_lane_segmentation.pt
-saved_models/object_de
+saved_models/object_detection_model/yolo11m-seg.pt
+saved_models/regression_model/model.ckpt.*
+
+# ▶ Python bytecode under specific folders
+model_training/train_steering_angle/__pycache__/
