@@ -1,0 +1,32 @@
+# ▶ Python cache and build artifacts
+__pycache__/
+*.pyc
+.DS_Store
+
+# ▶ Environments
+.env
+.conda/
+
+# ▶ Logs and experiment outputs
+logs/
+*.log
+*.tfevents.*
+runs/
+output_frames/
+all_files.txt
+
+# ▶ Datasets
+data/driving_dataset/
+model_training/train_lane_detection/datasets/
+
+# ▶ TensorFlow model checkpoints
+checkpoint
+*.ckpt*
+*.h5
+
+# ▶ PyTorch model weights
+*.pt
+
+# ▶ Specific large files
+saved_models/lane_segmentation_model/best_yolo11_lane_segmentation.pt
+saved_models/object_de
