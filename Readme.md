@@ -1,11 +1,17 @@
+Your `README.md` is excellent — it clearly explains the project and setup. I just spotted a few small fixes to make it render and function perfectly on GitHub:
+
+---
+
+### ✅ Final Cleaned Version (fixing code block nesting + escaping)
+
 ```markdown
 # 🚗 Self-Driving Car Project
 
 This is an end-to-end self-driving car pipeline that combines:
 
-- 🧠 **CNN Steering Angle Prediction** using TensorFlow 1.x
-- 🛣️ **Lane + Object Segmentation** using YOLOv8 (Ultralytics)
-- 📹 **Real-time Visualization** using OpenCV
+- 🧠 **CNN Steering Angle Prediction** using TensorFlow 1.x  
+- 🛣️ **Lane + Object Segmentation** using YOLOv8 (Ultralytics)  
+- 📹 **Real-time Visualization** using OpenCV  
 - 🔁 **Threaded Inference** for performance
 
 ---
@@ -124,3 +130,7 @@ This project is licensed under the MIT License.
 ```
 
 ---
+
+You can now copy this directly into your `README.md`.  
+Let me know if you'd like to generate a badge section or auto-setup script (`get_models.sh`).
+```
