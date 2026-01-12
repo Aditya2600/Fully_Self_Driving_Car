@@ -9,8 +9,6 @@ mkdir -p saved_models/object_detection_model
 wget -O saved_models/object_detection_model/yolo11m-seg.pt "https://drive.google.com/file/d/1oSvavrDpkzI8OH6F2XQfZxfM8Bf5uX6D/view?usp=sharing"
 
 mkdir -p saved_models/regression_model
-wget -O saved_models/regression_model/model.ckpt.data-00000-of-00001 "https://drive.google.com/file/d/1FkNwBdHAoirMd7ZdPGlpZzczT1Z4yOy_/view?usp=sharing"
-wget -O saved_models/regression_model/model.ckpt.index "https://drive.google.com/file/d/18OPR3FuO9ppny1VXXqAubOTDgF5wu4XD/view?usp=sharing"
-wget -O saved_models/regression_model/model.ckpt.meta "https://drive.google.com/file/d/1vh85gatTV1AEuHW_tr9FOD8obod1ZFCb/view?usp=sharing"
+echo "Steering model not bundled. Train with model_training/train_steering_angle/train.py to create saved_models/regression_model/model.pth."
 
 echo "✅ All models downloaded."

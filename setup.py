@@ -1,7 +1,6 @@
 import os
 from setuptools import setup, find_packages
 
-# export PYTHONPATH=$PYTHONPATH:/Users/bchippada/Desktop/FSD_Final_Demo
 
 # Automatically create necessary directories
 dirs = [

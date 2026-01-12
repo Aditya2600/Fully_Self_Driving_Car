@@ -8,26 +8,26 @@ import colorsys
 import time
 from typing import List, Tuple
 import concurrent.futures
-import tensorflow.compat.v1 as tf
+import torch
 from ultralytics import YOLO
-from src.models import model
-from subprocess import call
-
-tf.disable_v2_behavior()
+from src.models.model import SteeringAngleModel
 
 # ================================
 # 🧠 Steering Angle Prediction
 # ================================
 class SteeringAnglePredictor:
-    def __init__(self, model_path: str):
-        self.sess = tf.InteractiveSession()
-        self.saver = tf.train.Saver()
-        self.saver.restore(self.sess, model_path)
+    def __init__(self, model_path: str, device=None):
+        self.device = torch.device(device or ("cuda" if torch.cuda.is_available() else "cpu"))
+        self.model = SteeringAngleModel().to(self.device)
+        self.model.load_state_dict(torch.load(model_path, map_location=self.device))
+        self.model.eval()
 
     def predict_angle(self, image) -> float:
-        with self.sess.as_default():
-            rad = model.y.eval(feed_dict={model.x: [image], model.keep_prob: 1.0})[0][0]
-            return rad * 180.0 / np.pi
+        input_tensor = torch.from_numpy(np.asarray(image, dtype=np.float32))
+        input_tensor = input_tensor.unsqueeze(0).permute(0, 3, 1, 2).contiguous().to(self.device)
+        with torch.no_grad():
+            rad = self.model(input_tensor).item()
+        return rad * 180.0 / np.pi
 
 # ===============================
 # 🧠 YOLO Segmentation
@@ -159,7 +159,7 @@ class SelfDrivingCarSimulator:
 # 🚀 Entry Point
 # =================================
 if __name__ == "__main__":
-    steering_model_path = "saved_models/regression_model/model.ckpt"
+    steering_model_path = "saved_models/regression_model/model.pth"
     lane_model_path = "saved_models/lane_segmentation_model/best_yolo11_lane_segmentation.pt"
     object_model_path = "saved_models/object_detection_model/yolo11m-seg.pt"
     data_folder = "data/driving_dataset/data"

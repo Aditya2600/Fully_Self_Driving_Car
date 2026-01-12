@@ -1,11 +1,8 @@
-
-
-
 # 🚗 Self-Driving Car Project
 
 This is an end-to-end self-driving car pipeline that combines:
 
-- 🧠 **CNN Steering Angle Prediction** using TensorFlow 1.x  
+- 🧠 **CNN Steering Angle Prediction** using PyTorch  
 - 🛣️ **Lane + Object Segmentation** using YOLOv8 (Ultralytics)  
 - 📹 **Real-time Visualization** using OpenCV  
 - 🔁 **Threaded Inference** for performance
@@ -60,7 +57,7 @@ Make sure the following models and files exist:
 
 ```
 saved_models/
-├── regression_model/model.ckpt.*
+├── regression_model/model.pth
 ├── lane_segmentation_model/best_yolo11_lane_segmentation.pt
 ├── object_detection_model/yolo11m-seg.pt
 
@@ -106,7 +103,7 @@ data/
 
 See `requirements.txt`. Key packages include:
 
-* `tensorflow==1.15`
+* `torch`
 * `ultralytics`
 * `opencv-python`
 * `numpy`
@@ -123,5 +120,9 @@ Aditya Meshram
 
 This project is licensed under the MIT License.
 
+<<<<<<< HEAD
 
 
+=======
+```
+>>>>>>> 55e0c2e (final commit)

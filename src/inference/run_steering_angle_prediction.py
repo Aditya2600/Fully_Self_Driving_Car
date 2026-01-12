@@ -3,28 +3,29 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../../")))
 import cv2
 import numpy as np
-import tensorflow.compat.v1 as tf
+import torch
 from subprocess import call
 
-from src.models import model  # Your TensorFlow model definition
+from src.models.model import SteeringAngleModel
 # from ultralytics import YOLO  # Optional: for segmentation if needed
-
-tf.disable_v2_behavior()
 
 # ===============================
 # Steering Prediction from Model
 # ===============================
 class SteeringAnglePredictor:
-    def __init__(self, model_path):
-        self.session = tf.InteractiveSession()
-        self.saver = tf.train.Saver()
-        self.saver.restore(self.session, model_path)
-        self.smoothed_angle = 0
+    def __init__(self, model_path, device=None):
+        self.device = torch.device(device or ("cuda" if torch.cuda.is_available() else "cpu"))
+        self.model = SteeringAngleModel().to(self.device)
+        self.model.load_state_dict(torch.load(model_path, map_location=self.device))
+        self.model.eval()
+        self.smoothed_angle = 0.0
 
     def predict_angle(self, image):
-        # Missing keep_prob value; commonly 1.0 for inference
-        degrees = self.session.run(model.y, feed_dict={model.x: [image], model.keep_prob: 1.0})
-        return float(degrees[0][0])
+        input_tensor = torch.from_numpy(np.asarray(image, dtype=np.float32))
+        input_tensor = input_tensor.unsqueeze(0).permute(0, 3, 1, 2).contiguous().to(self.device)
+        with torch.no_grad():
+            output = self.model(input_tensor)
+        return float(output.item())
 
     def smooth_angle(self, predicted_angle):
         if self.smoothed_angle == 0:
@@ -34,7 +35,7 @@ class SteeringAnglePredictor:
         return self.smoothed_angle
 
     def close(self):
-        self.session.close()
+        pass
 
 # ============================
 # Driving Simulator Component
@@ -83,7 +84,7 @@ class DrivingSimulator:
 # Main Entry Point
 # ===========================
 if __name__ == "__main__":
-    model_path = "saved_models/regression_model/model.ckpt"
+    model_path = "saved_models/regression_model/model.pth"
     data_dir = "data/driving_dataset/data"
     steering_image_path = "data/steer-wheel.png"
 

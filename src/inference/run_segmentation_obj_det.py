@@ -3,7 +3,7 @@ import cv2
 import numpy as np
 import colorsys
 from typing import List, Tuple
-from ultralytics import YOLO  # Assuming you're using YOLOv8 or similar
+from ultralytics import YOLO  
 
 class SegmentationVisualizer:
     def __init__(self, model_path_1: str, model_path_2: str, conf_threshold: float):

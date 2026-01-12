@@ -1,82 +1,33 @@
-import tensorflow.compat.v1 as tf
-tf.disable_v2_behavior()
-import scipy
-
-def weight_variable(shape):
-    initial = tf.truncated_normal(shape, stddev = 0.1)
-    return tf.Variable(initial)
-
-def bias_variable(shape):
-    initial = tf.constant(0.1, shape = shape)
-    return tf.Variable(initial)
-
-def conv2d(x, W, stride):
-    return tf.nn.conv2d(x, W,strides = [1, stride, stride, 1],padding='VALID')
-
-x = tf.placeholder(tf.float32, shape = [None, 66, 200, 3])   
-y_ = tf.placeholder(tf.float32, shape = [None, 1])
-
-x_image = x
-
-W_conv1 = weight_variable([5, 5, 3, 24])
-b_conv1 = bias_variable([24])   
-
-h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1, 2) + b_conv1)
-
-W_conv2 = weight_variable([5, 5, 24, 36])
-b_conv2 = bias_variable([36])
-
-h_conv2 = tf.nn.relu(conv2d(h_conv1, W_conv2, 2) + b_conv2)
+import torch
+from torch import nn
 
 
-W_conv3 = weight_variable([5, 5, 36, 48])
-b_conv3 = bias_variable([48])   
+class SteeringAngleModel(nn.Module):
+    def __init__(self, dropout_p: float = 0.2):
+        super().__init__()
+        self.conv1 = nn.Conv2d(3, 24, kernel_size=5, stride=2)
+        self.conv2 = nn.Conv2d(24, 36, kernel_size=5, stride=2)
+        self.conv3 = nn.Conv2d(36, 48, kernel_size=5, stride=2)
+        self.conv4 = nn.Conv2d(48, 64, kernel_size=3, stride=1)
+        self.conv5 = nn.Conv2d(64, 64, kernel_size=3, stride=1)
+        self.relu = nn.ReLU()
+        self.fc1 = nn.Linear(1152, 1164)
+        self.fc2 = nn.Linear(1164, 100)
+        self.fc3 = nn.Linear(100, 50)
+        self.fc4 = nn.Linear(50, 10)
+        self.fc5 = nn.Linear(10, 1)
+        self.dropout = nn.Dropout(p=dropout_p)
 
-h_conv3 = tf.nn.relu(conv2d(h_conv2, W_conv3, 2) + b_conv3)
-        
-W_conv4 = weight_variable([3, 3, 48, 64])
-b_conv4 = bias_variable([64])   
-
-h_conv4 = tf.nn.relu(conv2d(h_conv3, W_conv4, 1) + b_conv4)
-
-        
-W_conv5 = weight_variable([3, 3, 64, 64])
-b_conv5 = bias_variable([64])   
-
-h_conv5 = tf.nn.relu(conv2d(h_conv4, W_conv5, 1) + b_conv5)
-
-
-W_fc1 = weight_variable([1152, 1164])
-b_fc1 = bias_variable([1164])
-
-h_conv5_flat = tf.reshape(h_conv5, [-1, 1152])
-h_fc1 = tf.nn.relu(tf.matmul(h_conv5_flat, W_fc1) + b_fc1)
-
-keep_prob = tf.placeholder(tf.float32)
-h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
-
-W_fc2 = weight_variable([1164, 100])
-b_fc2 = bias_variable([100])
-
-h_fc2 = tf.nn.relu(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)
-
-h_fc2_drop = tf.nn.dropout(h_fc2, keep_prob)
-
-W_fc3 = weight_variable([100, 50])
-b_fc3 = bias_variable([50])
-
-h_fc3 = tf.nn.relu(tf.matmul(h_fc2_drop, W_fc3) + b_fc3)
-
-h_fc3_drop = tf.nn.dropout(h_fc3, keep_prob)
-
-W_fc4 = weight_variable([50, 10])
-b_fc4 = bias_variable([10])
-
-h_fc4 = tf.nn.relu(tf.matmul(h_fc3_drop, W_fc4) + b_fc4)
-
-h_fc4_drop = tf.nn.dropout(h_fc4, keep_prob)
-            
-W_fc5 = weight_variable([10, 1])
-b_fc5 = bias_variable([1])
-
-y = tf.multiply(tf.atan(tf.matmul(h_fc4_drop, W_fc5) + b_fc5), 2)
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = self.relu(self.conv1(x))
+        x = self.relu(self.conv2(x))
+        x = self.relu(self.conv3(x))
+        x = self.relu(self.conv4(x))
+        x = self.relu(self.conv5(x))
+        x = x.view(x.size(0), -1)
+        x = self.dropout(self.relu(self.fc1(x)))
+        x = self.dropout(self.relu(self.fc2(x)))
+        x = self.dropout(self.relu(self.fc3(x)))
+        x = self.dropout(self.relu(self.fc4(x)))
+        x = self.fc5(x)
+        return torch.atan(x) * 2

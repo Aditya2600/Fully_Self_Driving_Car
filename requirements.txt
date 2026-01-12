@@ -1,8 +1,8 @@
-tensorflow
+torch
 opencv-python
 numpy
 pandas
 matplotlib
-keras
 ultralytics
 imageio
+tensorboard
